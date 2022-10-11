@@ -1,10 +1,11 @@
-import express, { Request, Response } from 'express'
+import express from 'express'
 import cors from 'cors'
 import { cache } from './cache'
 import config from './config'
 import mangaRoute from './routes/maga.routes'
 import notFound from './middlewares/notFound'
 import handleError from './middlewares/handleError'
+import { ReqRes } from './types'
 
 const app = express()
 
@@ -17,22 +18,21 @@ app.use(express.json())
 app.set('port', config.port)
 
 // ? Ruta principal
-app.get('/', (_: Request, res: Response) => {
+app.get<ReqRes>('/', (_, res) => {
   res.status(200).json({
     status: true,
-    message: 'Sraper de mangas.in y novelas',
-    repository: 'https://github.com/MarioSC21/AnimeFenix-Api-Scraping',
+    message: 'Web scraping and manga.in page api',
+    repository: 'https://github.com/MarioSC21/manga.In-Scrapper',
     endPoints: {
       latest: '/lastest',
       lastestUpdate: '/lastest/update',
-      infoCapitulo: '/manga/:idName/:cap',
+      infoManga: '/manga/:idName',
+      infoCapituloManga: '/manga/:idName/:cap',
       paginacionCapitulo: '/manga/:idName/:cap/:pag',
-      download: '/download/:id',
-      search: '/search?q=name'
-    },
-    endPointsPost: {
-      info: 'colocar el nombre de usuario y password de la pagina de animefenix si desea descargar con su usuario',
-      download: '/download/:id'
+      directorioMangas: '/mangaList',
+      directorioQueryFilters: '/directorio?page=&cat=&alpha=&sortBy=views&asc=true&author=&tag=&artist=',
+      directorioCategoriaValor: '/directorio/:querykey/:queryvalue',
+      searchManga: '/search?q=name'
     }
   })
 })
