@@ -6,6 +6,8 @@ import mangaRoute from './routes/maga.routes'
 import notFound from './middlewares/notFound'
 import handleError from './middlewares/handleError'
 import { ReqRes } from './types'
+import swaggerJSDoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
 
 const app = express()
 
@@ -16,6 +18,33 @@ app.use(express.json())
 
 // ? Puerto
 app.set('port', config.port)
+
+const options = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'REST API for Swagger Documentation',
+      description: 'Api for web scraping and manga.in page',
+      version: '1.0.0',
+      contact: {
+        name: 'MarioSC21',
+        url: 'https://mariosc21.github.io/myPortfolio/'
+      }
+    },
+    schemes: ['http', 'https'],
+    servers: [{ url: 'http://localhost:3000/' }],
+    externalDocs: {
+      description: 'Link to repository',
+      url: 'https://github.com/MarioSC21/manga.In-Scrapper'
+    }
+
+  },
+  apis: [
+    './src/routes/maga.routes.ts'
+  ]
+}
+
+const specs = swaggerJSDoc(options)
 
 // ? Ruta principal
 app.get<ReqRes>('/', (_, res) => {
@@ -36,6 +65,9 @@ app.get<ReqRes>('/', (_, res) => {
     }
   })
 })
+
+// ? Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 
 // ? Rutas
 app.use(mangaRoute)
