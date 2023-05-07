@@ -67,7 +67,7 @@ app.get<ReqRes>('/', (_, res) => {
 })
 
 // ? Swagger
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+app.use('/api-doc', swaggerUi.serve, swaggerUi.setup(specs))
 
 // ? Rutas
 app.use(mangaRoute)
