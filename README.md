@@ -5,4 +5,4 @@ manga.in page api using Web scraping
 ``` npm run dev ```
 
 # Documentacion con swagger 
-``` /api-docs ```
+``` /api-doc ```
